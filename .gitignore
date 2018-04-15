@@ -164,3 +164,9 @@ buildNumber.properties
 application-dev.properties
 application-local.properties
 application-real.properties
+
+
+environment.ts
+environment.prod.ts
+
+environments/*
