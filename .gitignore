@@ -170,3 +170,6 @@ environment.ts
 environment.prod.ts
 
 environments/*
+
+jwt.key
+jwt.key.pub
