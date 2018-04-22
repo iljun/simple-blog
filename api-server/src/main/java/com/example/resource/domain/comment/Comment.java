@@ -29,8 +29,9 @@ public class Comment extends Modified{
     @Column(name = "user_name")
     private String userName;
 
-    @Column(name = "post_id")
-    private Long postId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id")
+    private Post post;
 
     @Column(name = "deleted")
     private boolean deleted;

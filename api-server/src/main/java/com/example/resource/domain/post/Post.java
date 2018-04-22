@@ -18,7 +18,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @Where(clause = "deleted = 0")
 @Builder
-public class Post extends Modified{
+public class Post extends Modified {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,10 +30,9 @@ public class Post extends Modified{
     @Column(name = "content")
     private String content;
 
-    //TODO 단방향 참조 설정
-//    @OneToMany
-//    @JoinColumn(name = "post")
-//    private Collection<Comment> commentList;
+    @OneToMany
+    @JoinColumn(name = "post_id")
+    private Collection<Comment> commentList;
 
     @Column(name = "user_name")
     private String userName;
@@ -41,7 +40,7 @@ public class Post extends Modified{
     @Column(name = "deleted")
     private boolean deleted;
 
-    public void deleted(){
+    public void deleted() {
         this.deleted = true;
     }
 }

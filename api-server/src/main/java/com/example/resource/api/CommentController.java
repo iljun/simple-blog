@@ -26,7 +26,7 @@ public class CommentController {
                         .msg("댓글 등록")
                         .status(ResponseStatus.SUCCESS)
                         .build()
-                ,HttpStatus.OK
+                ,HttpStatus.CREATED
         );
     }
 
