@@ -2,6 +2,7 @@ package com.example.resource.api;
 
 import com.example.resource.api.request.comment.AddComment;
 import com.example.resource.api.request.comment.UpdateComment;
+import com.example.resource.api.response.MsgConstant;
 import com.example.resource.api.response.ResponseDto;
 import com.example.resource.api.response.ResponseStatus;
 import com.example.resource.domain.comment.CommentService;
@@ -23,7 +24,7 @@ public class CommentController {
         return new ResponseEntity<ResponseDto>(
                 ResponseDto
                         .builder()
-                        .msg("댓글 등록")
+                        .msg(MsgConstant.SAVE_SUCCESS)
                         .status(ResponseStatus.SUCCESS)
                         .build()
                 ,HttpStatus.CREATED
@@ -36,7 +37,7 @@ public class CommentController {
         return new ResponseEntity<ResponseDto>(
                 ResponseDto
                     .builder()
-                    .msg("댓글 수정")
+                    .msg(MsgConstant.UPDATE_SUCCESS)
                     .status(ResponseStatus.SUCCESS)
                     .build()
                 ,HttpStatus.OK
@@ -49,7 +50,7 @@ public class CommentController {
         return new ResponseEntity<ResponseDto>(
                 ResponseDto
                     .builder()
-                    .msg("댓글 삭제")
+                    .msg(MsgConstant.DELETED_SUCCESS)
                     .status(ResponseStatus.SUCCESS)
                     .build()
                 ,HttpStatus.OK
