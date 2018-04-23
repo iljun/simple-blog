@@ -2,6 +2,7 @@ package com.example.oauthserver.domain.member;
 
 import com.example.oauthserver.domain.role.Role;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Where;
@@ -15,6 +16,7 @@ import java.util.Collection;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Member {
 
     @Id
