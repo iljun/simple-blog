@@ -10,4 +10,5 @@ public class ResponseDto {
 
     private String msg;
     private HttpStatus status;
+    private Object data;
 }

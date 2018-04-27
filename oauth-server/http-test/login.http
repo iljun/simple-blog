@@ -1,0 +1,29 @@
+POST http://localhost:8080/formlogin
+Content-Type: application/json
+
+{"username" : "sumusb@naver.com", "password" : "test"}
+
+### OK
+
+POST http://localhost:8080/formlogin
+Content-Type: application/json
+
+{"username" : "sumusb@naver.com", "password" : "test123"}
+
+### PASSWORD not match
+
+POST http://localhost:8080/formlogin
+Content-Type: application/json
+
+{"username" : "sumusb@naver", "password" : "test"}
+
+### username not Match
+
+POST http://localhost:8080/formlogin
+Content-Type: application/json
+
+{"username" : "" , "password" : ""}
+
+### loginDto empty
+
+
