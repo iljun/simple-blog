@@ -27,7 +27,7 @@ public class MemberContext extends User {
     }
 
     public static MemberContext formMemberModel(Member member){
-        return new MemberContext(member,member.getUsername().get(),member.getPassword().get(),parseAuthorities(member.getUserRole()));
+        return new MemberContext(member,member.getUsername(),member.getPassword(),parseAuthorities(member.getUserRole()));
     }
 
     private static List<SimpleGrantedAuthority> parseAuthorities(UserRole role){

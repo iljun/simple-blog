@@ -1,11 +1,13 @@
 package com.example.oauthserver.config.security.handlers;
 
+import com.example.oauthserver.advice.JwtException;
 import com.example.oauthserver.api.response.MsgConstant;
 import com.example.oauthserver.api.response.ResponseDto;
 import com.example.oauthserver.api.response.ResponseStatus;
 import com.example.oauthserver.config.security.JwtFactory;
 import com.example.oauthserver.config.security.MemberContext;
 import com.example.oauthserver.config.security.tokens.PostAuthorizationToken;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,16 +45,28 @@ public class FormLoginAuthenticationSuccessHandler implements AuthenticationSucc
 
         String jwtToken = jwtFactory.generateToken(memberContext);
 
-        httpServletResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-        httpServletResponse.setStatus(HttpStatus.OK.value());
+        processResponse(httpServletResponse, writeDto(jwtToken));
+    }
+
+
+    private ResponseDto writeDto(String jwtToken) throws JsonProcessingException{
+        return ResponseDto
+                .builder()
+                .status(HttpStatus.OK)
+                .msg(MsgConstant.LOGIN_SUCCESS)
+                .data(objectMapper.writeValueAsString(jwtToken))
+                .build();
+    }
+
+    private void processResponse(HttpServletResponse httpServletResponse, ResponseDto dto) throws JsonProcessingException, IOException {
+        httpServletResponse
+                .setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+
+        httpServletResponse
+                .setStatus(HttpStatus.OK.value());
+
         httpServletResponse
                 .getWriter()
-                .write(
-                        ResponseDto
-                                .builder()
-                                .status(HttpStatus.OK)
-                                .msg(MsgConstant.LOGIN_SUCCESS)
-                                .data(objectMapper.writeValueAsString(jwtToken))
-                                .build().toString());
+                .write(dto.toString());
     }
 }

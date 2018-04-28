@@ -3,8 +3,7 @@ package com.example.oauthserver.config.security.filters;
 import com.example.oauthserver.api.request.FormLoginDto;
 import com.example.oauthserver.config.security.tokens.PreAuthorizationToken;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
@@ -23,6 +22,7 @@ import java.io.IOException;
  * Date : 18. 4. 27
  * Time: 오후 7:01
  */
+@Slf4j
 public class FormLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     private AuthenticationSuccessHandler authenticationSuccessHandler;
@@ -44,6 +44,7 @@ public class FormLoginFilter extends AbstractAuthenticationProcessingFilter {
     public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res) throws AuthenticationException, IOException, ServletException {
 
         FormLoginDto dto = new ObjectMapper().readValue(req.getReader(), FormLoginDto.class);
+
         PreAuthorizationToken token = new PreAuthorizationToken(dto);
 
         return super.getAuthenticationManager().authenticate(token);
