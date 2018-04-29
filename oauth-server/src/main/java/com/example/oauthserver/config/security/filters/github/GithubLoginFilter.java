@@ -1,7 +1,7 @@
-package com.example.oauthserver.config.security.filters.form;
+package com.example.oauthserver.config.security.filters.github;
 
-import com.example.oauthserver.api.request.FormLoginDto;
-import com.example.oauthserver.config.security.tokens.form.FormPreAuthorizationToken;
+import com.example.oauthserver.api.request.github.GithubCode;
+import com.example.oauthserver.config.security.tokens.github.GithubPreAuthorizationToken;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -19,33 +19,31 @@ import java.io.IOException;
 /**
  * Created By iljun
  * User : iljun
- * Date : 18. 4. 27
- * Time: 오후 7:01
+ * Date : 18. 4. 29
+ * Time: 오후 2:46
  */
 @Slf4j
-public class FormLoginFilter extends AbstractAuthenticationProcessingFilter {
+public class GithubLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     private AuthenticationSuccessHandler authenticationSuccessHandler;
     private AuthenticationFailureHandler authenticationFailureHandler;
 
-    public FormLoginFilter(String defaultUrl, AuthenticationSuccessHandler successHandler, AuthenticationFailureHandler failureHandler) {
+    public GithubLoginFilter(String defaultUrl, AuthenticationSuccessHandler successHandler, AuthenticationFailureHandler failureHandler) {
         super(defaultUrl);
 
         this.authenticationSuccessHandler = successHandler;
         this.authenticationFailureHandler = failureHandler;
     }
 
-
-    protected FormLoginFilter(String defaultFilterProcessesUrl) {
-        super(defaultFilterProcessesUrl);
+    protected GithubLoginFilter(String defaultUrl){
+        super(defaultUrl);
     }
 
-    @Override
-    public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res) throws AuthenticationException, IOException, ServletException {
+    public Authentication attemptAuthentication(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws AuthenticationException, IOException, ServletException {
 
-        FormLoginDto dto = new ObjectMapper().readValue(req.getReader(), FormLoginDto.class);
+        GithubCode code = new ObjectMapper().readValue(httpServletRequest.getReader(), GithubCode.class);
 
-        FormPreAuthorizationToken token = new FormPreAuthorizationToken(dto);
+        GithubPreAuthorizationToken token = new GithubPreAuthorizationToken(code);
 
         return super.getAuthenticationManager().authenticate(token);
     }
@@ -57,7 +55,6 @@ public class FormLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        this.authenticationFailureHandler.onAuthenticationFailure(request,response,failed);
+        this.authenticationFailureHandler.onAuthenticationFailure(request, response, failed);
     }
 }
-

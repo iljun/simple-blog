@@ -12,13 +12,13 @@ import java.util.Collection;
  * Date : 18. 4. 27
  * Time: 오후 7:04
  */
-public class PostAuthorizationToken extends UsernamePasswordAuthenticationToken {
+public class FormPostAuthorizationToken extends UsernamePasswordAuthenticationToken {
 
-    public PostAuthorizationToken(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
+    public FormPostAuthorizationToken(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
         super(principal, credentials, authorities);
     }
 
-    public static PostAuthorizationToken getTokenFromAccountContext(MemberContext memberContext) {
-        return new PostAuthorizationToken(memberContext, memberContext.getPassword(), memberContext.getAuthorities());
+    public static FormPostAuthorizationToken getTokenFromAccountContext(MemberContext memberContext) {
+        return new FormPostAuthorizationToken(memberContext, memberContext.getPassword(), memberContext.getAuthorities());
     }
 }

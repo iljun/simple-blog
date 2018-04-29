@@ -19,13 +19,15 @@ import {SignUpComponent} from './sign-up/sign-up.component';
 
 import { SocialLoginModule, AuthServiceConfig } from "angular4-social-login";
 import { GoogleLoginProvider, FacebookLoginProvider } from "angular4-social-login";
+import { GithubComponent } from './social/github/github.component';
 
 const appRoutes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'home', component: HomeMainComponent},
   {path: 'post', component: PostComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'signUp', component: SignUpComponent}
+  {path: 'signUp', component: SignUpComponent},
+  {path: 'login/github', component: GithubComponent}
 ];
 
 @NgModule({
@@ -38,7 +40,8 @@ const appRoutes: Routes = [
     PostDetailComponent,
     PostEditComponent,
     LoginComponent,
-    SignUpComponent
+    SignUpComponent,
+    GithubComponent
   ],
   imports: [
     BrowserModule,

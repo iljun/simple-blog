@@ -1,12 +1,14 @@
-package com.example.oauthserver.config.security.handlers.form;
+package com.example.oauthserver.config.security.handlers.github;
 
 import com.example.oauthserver.api.response.MsgConstant;
 import com.example.oauthserver.api.response.ResponseDto;
+import com.example.oauthserver.config.security.GithubContext;
 import com.example.oauthserver.config.security.JwtFactory;
 import com.example.oauthserver.config.security.MemberContext;
-import com.example.oauthserver.config.security.tokens.form.FormPostAuthorizationToken;
+import com.example.oauthserver.config.security.tokens.github.GithubPostAuthorizationToken;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,11 +24,12 @@ import java.io.IOException;
 /**
  * Created By iljun
  * User : iljun
- * Date : 18. 4. 27
- * Time: 오후 7:07
+ * Date : 18. 4. 29
+ * Time: 오후 2:49
  */
 @Component
-public class FormLoginAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+@Slf4j
+public class GithubLoginAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     @Autowired
     private JwtFactory jwtFactory;
@@ -37,17 +40,18 @@ public class FormLoginAuthenticationSuccessHandler implements AuthenticationSucc
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
 
-        FormPostAuthorizationToken token = (FormPostAuthorizationToken)authentication;
+        GithubPostAuthorizationToken token = (GithubPostAuthorizationToken)authentication;
 
-        MemberContext memberContext = (MemberContext) token.getPrincipal();
+        GithubContext githubContext = (GithubContext) token.getPrincipal();
 
-        String jwtToken = jwtFactory.generateToken(memberContext);
+        String jwtToken = jwtFactory.generateToken(githubContext);
 
-        processResponse(httpServletResponse, writeDto(jwtToken));
+        processResponse(httpServletResponse,writeDto(jwtToken));
+        log.info(githubContext.getUsername()+"님 로그인");
+
     }
 
-
-    private ResponseDto writeDto(String jwtToken) throws JsonProcessingException{
+    private ResponseDto writeDto(String jwtToken) throws JsonProcessingException {
         return ResponseDto
                 .builder()
                 .status(HttpStatus.OK)

@@ -2,8 +2,8 @@ package com.example.oauthserver.config.security.providers.form;
 
 import com.example.oauthserver.advice.LoginException;
 import com.example.oauthserver.config.security.MemberContext;
-import com.example.oauthserver.config.security.tokens.form.PostAuthorizationToken;
-import com.example.oauthserver.config.security.tokens.form.PreAuthorizationToken;
+import com.example.oauthserver.config.security.tokens.form.FormPostAuthorizationToken;
+import com.example.oauthserver.config.security.tokens.form.FormPreAuthorizationToken;
 import com.example.oauthserver.domain.member.Member;
 import com.example.oauthserver.domain.member.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class FormLoginAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
-        PreAuthorizationToken token = (PreAuthorizationToken)authentication;
+        FormPreAuthorizationToken token = (FormPreAuthorizationToken)authentication;
 
         Optional<String> username = Optional.ofNullable((String)token.getPrincipal());
         Optional<String> password = Optional.ofNullable((String)token.getCredentials());
@@ -44,7 +44,7 @@ public class FormLoginAuthenticationProvider implements AuthenticationProvider {
         Member member = memberRepository.findByEmail(username.get()).orElseThrow(() -> new LoginException("존재하지 않는 계정입니다."));
 
         if(isCorrectPassword(password.get(),member))
-            return PostAuthorizationToken.getTokenFromAccountContext(MemberContext.formMemberModel(member));
+            return FormPostAuthorizationToken.getTokenFromAccountContext(MemberContext.formMemberModel(member));
 
         throw new LoginException("패스워드가 일치하지 않습니다.");
 
@@ -52,7 +52,7 @@ public class FormLoginAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return PreAuthorizationToken.class.isAssignableFrom(aClass);
+        return FormPreAuthorizationToken.class.isAssignableFrom(aClass);
     }
 
     private boolean isCorrectPassword(String password, Member member) {

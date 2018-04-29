@@ -37,7 +37,7 @@ Content-Type: application/json
 POST https://github.com/login/oauth/access_token
 Content-Type: application/json
 
-{"client_id" : "54a730b4c148dfd59769", "client_secret" : "a71c48ba18d29595080cf6d49c574a0f5efbb92e", "code" : "dbb9e1b387106a7e36df"}
+{"client_id" : "54a730b4c148dfd59769", "client_secret" : "a71c48ba18d29595080cf6d49c574a0f5efbb92e", "code" : "ac61e0b2e7938410eb31"}
 
 ###
 

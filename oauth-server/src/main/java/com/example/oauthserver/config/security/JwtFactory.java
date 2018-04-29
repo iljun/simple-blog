@@ -17,6 +17,8 @@ import java.io.UnsupportedEncodingException;
 import java.security.KeyPair;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created By iljun
@@ -36,6 +38,7 @@ public class JwtFactory {
     @Value("${password}")
     private String password;
 
+
     public String generateToken(MemberContext memberContext) {
 
         String token = null;
@@ -54,6 +57,27 @@ public class JwtFactory {
         return token;
     }
 
+    public String generateToken(GithubContext githubContext){
+        String token = null;
+
+        try {
+            token = JWT.create()
+                    .withIssuer(ISSUER)
+                    .withClaim("user_id", githubContext.getMember().getId())
+                    .withClaim("social",githubContext.getMember().getSocialProfile())
+//                    .withExpiresAt()
+//                    .withIssuedAt()
+                    .withAudience("Simple-blog")
+//                    .withJWTId()
+                    .sign(generateAlgorithm());
+        } catch (Exception e) {
+            log.error("jwt 암호화 실패");
+            throw new JwtException("jwt 암호화 실패");
+        }
+
+        return token;
+
+    }
     private Algorithm generateAlgorithm() throws UnsupportedEncodingException{
 //        return Algorithm.HMAC256(getPrivate(getKeyPair()).toString());
         return Algorithm.HMAC256(signingKey);

@@ -30,7 +30,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 //                .allowedOrigins("origin")
                 .allowedOrigins("*")
                 .allowedMethods("GET","POST","PUT","DELETE")
-                .allowedHeaders("authorization","content-type");
+                .allowedHeaders("Authorization","content-type");
     }
 
     @Bean

@@ -1,6 +1,6 @@
 package com.example.oauthserver.config.social;
 
-import com.example.oauthserver.api.request.AccessToken;
+import com.example.oauthserver.api.request.github.GithubAccessToken;
 import com.example.oauthserver.api.response.github.GithubUserProfile;
 import com.example.oauthserver.domain.member.Member;
 import com.example.oauthserver.domain.member.MemberService;
@@ -23,7 +23,7 @@ import java.util.Optional;
  */
 @Service
 @Slf4j
-public class SocialServiceImpl implements SocialService {
+public class GithubServiceImpl implements GithubService {
 
     @Autowired
     private RestTemplate restTemplate;
@@ -64,9 +64,10 @@ public class SocialServiceImpl implements SocialService {
 
         HttpEntity<?> request = new HttpEntity<>(req_payload, httpHeaders);
 
-        ResponseEntity<AccessToken> accessTokenResponseEntity = restTemplate.postForEntity(accessTokenUrl, request, AccessToken.class);
+        ResponseEntity<GithubAccessToken> accessTokenResponseEntity = restTemplate.postForEntity(accessTokenUrl, request, GithubAccessToken.class);
 
         Optional<String> accessToken = Optional.ofNullable(accessTokenResponseEntity.getBody().getAccess_token());
+
         accessToken.orElseThrow(() -> new RuntimeException("AccessToken 발급 실패"));
 
         return accessToken.get();

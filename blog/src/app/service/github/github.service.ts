@@ -1,13 +1,23 @@
 import { Injectable } from '@angular/core';
-import {HttpClient,HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {environment} from "../../../environments/environment";
 
 @Injectable()
 export class GithubService {
 
-  constructor(private http:HttpClient) { }
+  private httpHeader:HttpHeaders;
+  private host = environment.host;
+  private url = environment.githubUrl;
 
-  githubSignIn(){
-    this.http.get("https://github.com/login/oauth/authorize?client_id=54a730b4c148dfd59769&redirect_uri:http://localhost:4200").toPromise();
+  constructor(private http:HttpClient) {
+    this.httpHeader = new HttpHeaders();
+    this.httpHeader.append('Content-Type', 'application/json');
+  }
+
+  githubSignIn(code:String){
+
+    //TODO Token저장
+    this.http.post(this.host + this.url,JSON.stringify(code)).toPromise();
   }
 
 }

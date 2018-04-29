@@ -13,8 +13,8 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
-  githubLogin(){
-
-    console.log(this.github.githubSignIn());
-  }
+  // githubLogin(){
+  //
+  //   console.log(this.github.githubSignIn());
+  // }
 }

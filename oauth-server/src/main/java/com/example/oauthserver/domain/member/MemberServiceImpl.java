@@ -11,6 +11,10 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class MemberServiceImpl implements MemberService {
+    private static final String GITHUB = "GITHUB";
+    private static final String FACEBOOK = "FACEBOOK";
+    private static final String GOOGLE = "GOOGLE";
+    private static final String NAVER = "NAVER";
 
     @Autowired
     private MemberRepository memberRepository;
@@ -32,22 +36,18 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member githubSignUp(GithubUserProfile githubUserProfile) {
-        Optional<Member> githubMember = memberRepository.findByEmailAndUsername(githubUserProfile.getEmail(), githubUserProfile.getName());
+        Optional<Member> githubMember = memberRepository.findByEmailAndUsernameAndSocialProfile(githubUserProfile.getEmail(), githubUserProfile.getName(),GITHUB);
 
-        Member member = githubMember.orElse(
-                memberRepository.save(
+        if(!githubMember.isPresent()){
+            githubMember = Optional.of(memberRepository.save(
                         Member
                                 .builder()
                                 .username(githubUserProfile.getName())
                                 .email(githubUserProfile.getEmail())
-                                .socialProfile("GITHUB")
+                                .socialProfile(GITHUB)
                                 .userRole(UserRole.USER)
                                 .build()));
-
-        log.info(githubMember.toString());
-        log.info(member.toString());
-
-        return member;
-        //TODO security 로그인 로직
+        }
+        return githubMember.get();
     }
 }

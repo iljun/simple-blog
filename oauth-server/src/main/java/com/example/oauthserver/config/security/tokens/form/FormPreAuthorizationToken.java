@@ -9,13 +9,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
  * Date : 18. 4. 27
  * Time: 오후 7:03
  */
-public class PreAuthorizationToken extends UsernamePasswordAuthenticationToken {
+public class FormPreAuthorizationToken extends UsernamePasswordAuthenticationToken {
 
-    private PreAuthorizationToken(String username, String password) {
+    private FormPreAuthorizationToken(String username, String password) {
         super(username, password);
     }
 
-    public PreAuthorizationToken(FormLoginDto dto){
+    public FormPreAuthorizationToken(FormLoginDto dto){
         this(dto.getUsername(),dto.getPassword());
     }
 }

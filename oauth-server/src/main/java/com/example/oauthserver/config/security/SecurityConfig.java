@@ -1,9 +1,13 @@
 package com.example.oauthserver.config.security;
 
 import com.example.oauthserver.config.security.filters.form.FormLoginFilter;
+import com.example.oauthserver.config.security.filters.github.GithubLoginFilter;
 import com.example.oauthserver.config.security.handlers.form.FormLoginAuthenticationFailureHandler;
 import com.example.oauthserver.config.security.handlers.form.FormLoginAuthenticationSuccessHandler;
+import com.example.oauthserver.config.security.handlers.github.GithubLoginAuthenticationFailureHandler;
+import com.example.oauthserver.config.security.handlers.github.GithubLoginAuthenticationSuccessHandler;
 import com.example.oauthserver.config.security.providers.form.FormLoginAuthenticationProvider;
+import com.example.oauthserver.config.security.providers.github.GithubLoginAuthenticationProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +21,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * Created By iljun
@@ -48,6 +53,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private FormLoginAuthenticationProvider formLoginAuthenticationProvider;
 
+    @Autowired
+    private GithubLoginAuthenticationSuccessHandler githubLoginAuthenticationSuccessHandler;
+
+    @Autowired
+    private GithubLoginAuthenticationFailureHandler githubLoginAuthenticationFailureHandler;
+
+    @Autowired
+    private GithubLoginAuthenticationProvider githubLoginAuthenticationProvider;
+
     @Bean
     public AuthenticationManager getAuthenticationManager() throws Exception{
         return super.authenticationManagerBean();
@@ -59,10 +73,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return filter;
     }
 
+    protected GithubLoginFilter githubLoginFilter() throws Exception {
+        GithubLoginFilter filter = new GithubLoginFilter("/signIn/github", githubLoginAuthenticationSuccessHandler, githubLoginAuthenticationFailureHandler);
+        filter.setAuthenticationManager(super.authenticationManagerBean());
+        return filter;
+    }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
-                .authenticationProvider(this.formLoginAuthenticationProvider);
+                .authenticationProvider(this.formLoginAuthenticationProvider)
+                .authenticationProvider(this.githubLoginAuthenticationProvider);
     }
 
     @Override
@@ -78,8 +99,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .headers().frameOptions().disable();
 
-//        http
-//                .addFilterBefore(formLoginFilter(), UsernamePasswordAuthenticationFilter.class);
+        http
+                .addFilterBefore(formLoginFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(githubLoginFilter(), UsernamePasswordAuthenticationFilter.class);
 
         http
                 .authorizeRequests()
