@@ -7,7 +7,7 @@ export class GithubService {
 
   private httpHeader:HttpHeaders;
   private host = environment.host;
-  private url = environment.githubUrl;
+  private url = environment.githubLoginUrl;
 
   constructor(private http:HttpClient) {
     this.httpHeader = new HttpHeaders();
