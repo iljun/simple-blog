@@ -1,10 +1,9 @@
-package com.example.oauthserver.config.security.providers;
+package com.example.oauthserver.config.security.providers.form;
 
-import com.example.oauthserver.advice.BadRequest;
 import com.example.oauthserver.advice.LoginException;
 import com.example.oauthserver.config.security.MemberContext;
-import com.example.oauthserver.config.security.tokens.PostAuthorizationToken;
-import com.example.oauthserver.config.security.tokens.PreAuthorizationToken;
+import com.example.oauthserver.config.security.tokens.form.PostAuthorizationToken;
+import com.example.oauthserver.config.security.tokens.form.PreAuthorizationToken;
 import com.example.oauthserver.domain.member.Member;
 import com.example.oauthserver.domain.member.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package com.example.oauthserver.config.security.tokens;
+package com.example.oauthserver.config.security.tokens.form;
 
 import com.example.oauthserver.config.security.MemberContext;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -1,9 +1,9 @@
 package com.example.oauthserver.config.security;
 
-import com.example.oauthserver.config.security.filters.FormLoginFilter;
-import com.example.oauthserver.config.security.handlers.FormLoginAuthenticationFailureHandler;
-import com.example.oauthserver.config.security.handlers.FormLoginAuthenticationSuccessHandler;
-import com.example.oauthserver.config.security.providers.FormLoginAuthenticationProvider;
+import com.example.oauthserver.config.security.filters.form.FormLoginFilter;
+import com.example.oauthserver.config.security.handlers.form.FormLoginAuthenticationFailureHandler;
+import com.example.oauthserver.config.security.handlers.form.FormLoginAuthenticationSuccessHandler;
+import com.example.oauthserver.config.security.providers.form.FormLoginAuthenticationProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +17,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * Created By iljun
@@ -79,7 +78,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .headers().frameOptions().disable();
 
+//        http
+//                .addFilterBefore(formLoginFilter(), UsernamePasswordAuthenticationFilter.class);
+
         http
-                .addFilterBefore(formLoginFilter(), UsernamePasswordAuthenticationFilter.class);
+                .authorizeRequests()
+                .antMatchers("/api/**")
+                .permitAll();
     }
 }

@@ -1,7 +1,7 @@
-package com.example.oauthserver.config.security.filters;
+package com.example.oauthserver.config.security.filters.form;
 
 import com.example.oauthserver.api.request.FormLoginDto;
-import com.example.oauthserver.config.security.tokens.PreAuthorizationToken;
+import com.example.oauthserver.config.security.tokens.form.PreAuthorizationToken;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;

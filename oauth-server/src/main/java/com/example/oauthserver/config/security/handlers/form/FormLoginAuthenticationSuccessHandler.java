@@ -1,12 +1,10 @@
-package com.example.oauthserver.config.security.handlers;
+package com.example.oauthserver.config.security.handlers.form;
 
-import com.example.oauthserver.advice.JwtException;
 import com.example.oauthserver.api.response.MsgConstant;
 import com.example.oauthserver.api.response.ResponseDto;
-import com.example.oauthserver.api.response.ResponseStatus;
 import com.example.oauthserver.config.security.JwtFactory;
 import com.example.oauthserver.config.security.MemberContext;
-import com.example.oauthserver.config.security.tokens.PostAuthorizationToken;
+import com.example.oauthserver.config.security.tokens.form.PostAuthorizationToken;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;

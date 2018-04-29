@@ -27,3 +27,23 @@ Content-Type: application/json
 ### loginDto empty
 
 
+GET https://github.com/login/oauth/authorize
+Content-Type: application/json
+
+{"client_id" : "54a730b4c148dfd59769", "redirect_uri" : "http://localhost:8080"}
+
+###
+
+POST https://github.com/login/oauth/access_token
+Content-Type: application/json
+
+{"client_id" : "54a730b4c148dfd59769", "client_secret" : "a71c48ba18d29595080cf6d49c574a0f5efbb92e", "code" : "dbb9e1b387106a7e36df"}
+
+###
+
+POST http://localhost:8080/api/signIn/github
+Content-Type: application/json
+
+{"token" : "3c9cd68099878f44429217356fc2ba1df7f107dc"}
+
+###

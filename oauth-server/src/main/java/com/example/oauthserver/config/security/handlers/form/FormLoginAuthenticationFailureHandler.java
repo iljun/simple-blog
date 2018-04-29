@@ -1,4 +1,4 @@
-package com.example.oauthserver.config.security.handlers;
+package com.example.oauthserver.config.security.handlers.form;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
