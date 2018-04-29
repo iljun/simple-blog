@@ -30,20 +30,20 @@ Content-Type: application/json
 GET https://github.com/login/oauth/authorize
 Content-Type: application/json
 
-{"client_id" : "54a730b4c148dfd59769", "redirect_uri" : "http://localhost:8080"}
+{"client_id" : "", "redirect_uri" : ""}
 
-###
+### authTest
 
 POST https://github.com/login/oauth/access_token
 Content-Type: application/json
 
-{"client_id" : "54a730b4c148dfd59769", "client_secret" : "a71c48ba18d29595080cf6d49c574a0f5efbb92e", "code" : "ac61e0b2e7938410eb31"}
+{"client_id" : "", "client_secret" : "", "code" : ""}
 
-###
+### accessToken test
 
 POST http://localhost:8080/api/signIn/github
 Content-Type: application/json
 
-{"token" : "3c9cd68099878f44429217356fc2ba1df7f107dc"}
+{"token" : ""}
 
-###
+### signIntest
