@@ -3,22 +3,16 @@ package com.example.oauthserver.config.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.example.oauthserver.advice.JwtException;
-import com.example.oauthserver.api.response.ResponseDto;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.security.KeyPair;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
+import java.net.URISyntaxException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * Created By iljun
@@ -31,7 +25,8 @@ import java.util.UUID;
 public class JwtFactory {
 
     //TODO key로 변경
-    private static String signingKey = "jwttest";
+    @Value("${signingnKey}")
+    private String signingKey;
 
     private static final String ISSUER = "simple-blog";
 
@@ -42,12 +37,14 @@ public class JwtFactory {
     public String generateToken(MemberContext memberContext) {
 
         String token = null;
-
         try {
             token = JWT.create()
                     .withIssuer(ISSUER)
+                    .withExpiresAt(new Date(new Date().getTime()*1000))
                     .withClaim("user_id", memberContext.getMember().getId())
-//                    .sign(Algorithm.HMAC256(getPrivate(getKeyPair())));
+                    .withClaim("user_name", memberContext.getMember().getUsername())
+                    .withClaim("role",memberContext.getMember().getUserRole().toString())
+//                    .withJWTId()
                     .sign(generateAlgorithm());
         } catch (Exception e) {
             log.error("jwt 암호화 실패");
@@ -57,17 +54,17 @@ public class JwtFactory {
         return token;
     }
 
-    public String generateToken(GithubContext githubContext){
+    public String generateToken(GithubContext githubContext) {
         String token = null;
 
         try {
             token = JWT.create()
                     .withIssuer(ISSUER)
                     .withClaim("user_id", githubContext.getMember().getId())
-                    .withClaim("social",githubContext.getMember().getSocialProfile())
-//                    .withExpiresAt()
-//                    .withIssuedAt()
-                    .withAudience("Simple-blog")
+                    .withClaim("social", githubContext.getMember().getSocialProfile())
+                    .withClaim("user_name", githubContext.getMember().getUsername())
+                    .withClaim("role",githubContext.getMember().getUserRole().toString())
+                    .withExpiresAt(new Date(new Date().getTime()*1000))
 //                    .withJWTId()
                     .sign(generateAlgorithm());
         } catch (Exception e) {
@@ -78,25 +75,28 @@ public class JwtFactory {
         return token;
 
     }
-    private Algorithm generateAlgorithm() throws UnsupportedEncodingException{
-//        return Algorithm.HMAC256(getPrivate(getKeyPair()).toString());
+
+    private Algorithm generateAlgorithm() throws UnsupportedEncodingException {
         return Algorithm.HMAC256(signingKey);
     }
 
-    private KeyPair getKeyPair() {
-        KeyPair keyPair = new KeyStoreKeyFactory(
-                new ClassPathResource("jwt.key"), password.toCharArray()
-        ).getKeyPair("blog", password.toCharArray());
-        return keyPair;
-    }
+    public String generateRefreshToken(MemberContext memberContext){
 
-    private String getPrivate(KeyPair keyPair){
-        RSAPrivateKey rsaPrivateKey = (RSAPrivateKey) keyPair.getPrivate();
-        return rsaPrivateKey.getAlgorithm();
-    }
+        String token = null;
+        try {
+            token = JWT.create()
+                    .withIssuer(ISSUER)
+                    .withExpiresAt(new Date(new Date().getTime()*100000))
+                    .withClaim("user_id", memberContext.getMember().getId())
+                    .withClaim("user_name", memberContext.getMember().getUsername())
+                    .withClaim("role",memberContext.getMember().getUserRole().toString())
+//                    .withJWTId()
+                    .sign(generateAlgorithm());
+        } catch (Exception e) {
+            log.error("jwt 암호화 실패");
+            throw new JwtException("jwt 암호화 실패");
+        }
 
-    private String getPublic(KeyPair keyPair){
-        RSAPublicKey rsaPublicKey = (RSAPublicKey) keyPair.getPublic();
-        return rsaPublicKey.getAlgorithm();
+        return token;
     }
 }

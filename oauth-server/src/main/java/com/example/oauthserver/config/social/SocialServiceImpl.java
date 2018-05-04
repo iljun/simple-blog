@@ -1,6 +1,8 @@
 package com.example.oauthserver.config.social;
 
+import com.example.oauthserver.advice.BadRequest;
 import com.example.oauthserver.api.request.github.GithubAccessToken;
+import com.example.oauthserver.api.request.google.GoogleProfile;
 import com.example.oauthserver.api.response.github.GithubUserProfile;
 import com.example.oauthserver.domain.member.Member;
 import com.example.oauthserver.domain.member.MemberService;
@@ -23,7 +25,7 @@ import java.util.Optional;
  */
 @Service
 @Slf4j
-public class GithubServiceImpl implements GithubService {
+public class SocialServiceImpl implements SocialService {
 
     @Autowired
     private RestTemplate restTemplate;
@@ -88,5 +90,21 @@ public class GithubServiceImpl implements GithubService {
         profile.orElseThrow(() -> new RuntimeException("프로필 조회 실패"));
 
         return profile.get();
+    }
+
+    @Override
+    public Member googleSignIn(GoogleProfile googleProfile) {
+        GoogleProfile profile = googleProfile;
+        //Google서버에 올바른 토큰인지 검증 --> DB조회후 member 리턴
+        if(validityToken(profile.getToken())){
+
+
+        }
+        throw new BadRequest("유효한 경로로 접근하지 않았습니다.");
+    }
+
+    private boolean validityToken(String token){
+        // google API 호출
+        return true;
     }
 }

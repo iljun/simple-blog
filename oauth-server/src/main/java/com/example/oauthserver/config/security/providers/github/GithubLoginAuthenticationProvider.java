@@ -3,7 +3,7 @@ package com.example.oauthserver.config.security.providers.github;
 import com.example.oauthserver.config.security.GithubContext;
 import com.example.oauthserver.config.security.tokens.github.GithubPostAuthorizationToken;
 import com.example.oauthserver.config.security.tokens.github.GithubPreAuthorizationToken;
-import com.example.oauthserver.config.social.GithubService;
+import com.example.oauthserver.config.social.SocialService;
 import com.example.oauthserver.domain.member.Member;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +23,14 @@ import org.springframework.stereotype.Component;
 public class GithubLoginAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
-    private GithubService githubService;
+    private SocialService socialService;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
         GithubPreAuthorizationToken token = (GithubPreAuthorizationToken)authentication;
 
-        Member member = githubService.githubSignIn(token.getPrincipal().toString());
+        Member member = socialService.githubSignIn(token.getPrincipal().toString());
 
         return GithubPostAuthorizationToken.getTokenFromGithubContext(GithubContext.formMemberModel(member));
 

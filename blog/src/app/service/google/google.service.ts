@@ -1,24 +1,23 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Injectable()
-export class GithubService {
-
+export class GoogleService {
   private httpHeader:HttpHeaders;
   private host = environment.host;
   private url = environment.githubLoginUrl;
+
 
   constructor(private http:HttpClient) {
     this.httpHeader = new HttpHeaders();
     this.httpHeader.append('Content-Type', 'application/json');
   }
 
-  githubSignIn(code:String){
-
-    //TODO Token저장
-    this.http.post(this.host + this.url,JSON.stringify(code)).toPromise();
-
+  getToken(profile:object){
+    this.http.post('http://localhost8080/signIn/google',profile,{headers:this.httpHeader}).toPromise()
+      .then(r => {
+        console.log(r);
+      })
   }
-
 }

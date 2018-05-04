@@ -11,4 +11,8 @@ import lombok.Data;
 @Data
 public class GithubCode {
     private String code;
+
+    public GithubCode(String code){
+        this.code = code;
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.oauthserver.config.security.handlers.form;
 
+import com.example.oauthserver.api.response.JWTtoken;
 import com.example.oauthserver.api.response.MsgConstant;
 import com.example.oauthserver.api.response.ResponseDto;
 import com.example.oauthserver.config.security.JwtFactory;
@@ -18,6 +19,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
 /**
  * Created By iljun
@@ -35,24 +40,24 @@ public class FormLoginAuthenticationSuccessHandler implements AuthenticationSucc
     private ObjectMapper objectMapper;
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException, UnsupportedEncodingException, IOException {
 
-        FormPostAuthorizationToken token = (FormPostAuthorizationToken)authentication;
+        FormPostAuthorizationToken token = (FormPostAuthorizationToken) authentication;
 
         MemberContext memberContext = (MemberContext) token.getPrincipal();
-
         String jwtToken = jwtFactory.generateToken(memberContext);
+        String refreshToken = jwtFactory.generateRefreshToken(memberContext);
 
-        processResponse(httpServletResponse, writeDto(jwtToken));
+        processResponse(httpServletResponse, writeDto(jwtToken,refreshToken));
     }
 
 
-    private ResponseDto writeDto(String jwtToken) throws JsonProcessingException{
+    private ResponseDto writeDto(String jwtToken,String refreshToken) throws JsonProcessingException {
         return ResponseDto
                 .builder()
                 .status(HttpStatus.OK)
                 .msg(MsgConstant.LOGIN_SUCCESS)
-                .data(objectMapper.writeValueAsString(jwtToken))
+                .data(new JWTtoken(jwtToken,refreshToken))
                 .build();
     }
 

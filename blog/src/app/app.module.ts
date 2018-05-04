@@ -16,10 +16,10 @@ import {PostDetailComponent} from './post/post-detail/post-detail.component';
 import {PostEditComponent} from './post/post-edit/post-edit.component';
 import {LoginComponent} from './login/login.component';
 import {SignUpComponent} from './sign-up/sign-up.component';
+import {GithubComponent} from './social/github/github.component';
+import {AuthServiceConfig, FacebookLoginProvider, SocialLoginModule} from "angular4-social-login";
+import {GoogleService} from "./service/google/google.service";
 
-import { SocialLoginModule, AuthServiceConfig } from "angular4-social-login";
-import { GoogleLoginProvider, FacebookLoginProvider } from "angular4-social-login";
-import { GithubComponent } from './social/github/github.component';
 
 const appRoutes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -29,7 +29,16 @@ const appRoutes: Routes = [
   {path: 'signUp', component: SignUpComponent},
   {path: 'login/github', component: GithubComponent}
 ];
-
+let config = new AuthServiceConfig([
+  // {
+  //   id: GoogleLoginProvider.PROVIDER_ID,
+  //   provider: new GoogleLoginProvider("Google-OAuth-Client-Id")
+  // },
+  {
+    id: FacebookLoginProvider.PROVIDER_ID,
+    provider: new FacebookLoginProvider("Facebook-App-Id")
+  }
+]);
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,11 +55,13 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     HttpClientModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    SocialLoginModule.initialize(config)
   ],
   providers: [
     PostService,
-    GithubService
+    GithubService,
+    GoogleService
   ],
   bootstrap: [AppComponent]
 })

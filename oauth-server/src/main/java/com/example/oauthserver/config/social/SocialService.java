@@ -1,5 +1,6 @@
 package com.example.oauthserver.config.social;
 
+import com.example.oauthserver.api.request.google.GoogleProfile;
 import com.example.oauthserver.domain.member.Member;
 
 /**
@@ -8,7 +9,9 @@ import com.example.oauthserver.domain.member.Member;
  * Date : 18. 4. 29
  * Time: 오후 12:00
  */
-public interface GithubService {
+public interface SocialService {
 
     Member githubSignIn(String code);
+
+    Member googleSignIn(GoogleProfile googleProfile);
 }
